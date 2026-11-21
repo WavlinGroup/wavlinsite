@@ -54,7 +54,7 @@ export function musicShareFromUrl(value: string, depth = 0): MusicShare | null {
   }
   const host = url.hostname.toLowerCase()
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return null
-  const wavlin = host === 'wavlin.cc' || host.endsWith('.wavlin.cc') || host === 'localhost' || host === '127.0.0.1'
+  const wavlin = host === new URL(SITE_URL).hostname || host === 'wavlin.cc' || host.endsWith('.wavlin.cc') || host === 'localhost' || host === '127.0.0.1'
   if (!wavlin && !['music.youtube.com', 'youtube.com', 'www.youtube.com', 'youtu.be'].includes(host)) return null
 
   const singleParam = (name: string) => url.searchParams.getAll(name).length === 1 ? url.searchParams.get(name) : null

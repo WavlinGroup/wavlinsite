@@ -37,7 +37,7 @@ try {
 
   const sitemap = await (await fetch(new URL('sitemap.xml', base))).text()
   for (const path of ['/', '/faq', '/privacy']) {
-    assert.match(sitemap, new RegExp(`<loc>https://wavlin.cc${path}</loc>`), `sitemap lists ${path}`)
+    assert.match(sitemap, new RegExp(`<loc>https://wavlinsite.dvaustria741.workers.dev${path}</loc>`), `sitemap lists ${path}`)
   }
   assert.doesNotMatch(sitemap, /<loc>https:\/\/wavlin\.cc\/listen(?:[/?<])/, 'sitemap omits noindex invitation pages')
   const schemas = [...(await (await fetch(new URL('', base))).text()).matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map(match => JSON.parse(match[1])['@type'])

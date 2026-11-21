@@ -13,7 +13,7 @@ const cases = [
 
 test('opens every music share format generated or recognized by the Wavlin app', () => {
   for (const [path, kind, id, youtubePath, appUrl] of cases) {
-    for (const origin of ['', 'https://wavlin.cc', 'https://share.wavlin.cc', 'http://localhost:8080', 'http://127.0.0.1:8080']) {
+    for (const origin of ['', 'https://wavlinsite.dvaustria741.workers.dev', 'https://wavlin.cc', 'https://share.wavlin.cc', 'http://localhost:8080', 'http://127.0.0.1:8080']) {
       const share = musicShareFromUrl(origin + path)
       expect(share).toEqual({ kind, id, youtubeUrl: `https://music.youtube.com${youtubePath}` })
       expect(musicAppUrl(share!)).toBe(appUrl)

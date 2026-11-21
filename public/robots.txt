@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wavlin.cc/sitemap.xml
+Sitemap: https://wavlinsite.dvaustria741.workers.dev/sitemap.xml

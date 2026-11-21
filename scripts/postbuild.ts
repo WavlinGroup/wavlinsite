@@ -87,7 +87,7 @@ const pages: Page[] = [
     markdown: ['index.md', homeMarkdown()],
     schemas: [
       // Schema: https://schema.org/WebSite; Google: https://developers.google.com/search/docs/appearance/site-names
-      { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: 'Wavlin', alternateName: ['Wavlin Music', 'wavlin.cc'], url: `${SITE_URL}/`, publisher: { '@id': `${SITE_URL}/#organization` } },
+      { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: 'Wavlin', alternateName: ['Wavlin Music'], url: `${SITE_URL}/`, publisher: { '@id': `${SITE_URL}/#organization` } },
       { '@context': 'https://schema.org', ...ORGANIZATION },
       app('Android'),
     ],

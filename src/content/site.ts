@@ -1,4 +1,5 @@
-export const SITE_URL = 'https://wavlin.cc'
+// Temporary Cloudflare Workers URL; switch back to https://wavlin.cc (and index.html, robots.txt) once that domain is owned.
+export const SITE_URL = 'https://wavlinsite.dvaustria741.workers.dev'
 export const REPO_URL = 'https://github.com/WavlinGroup/Wavlin'
 
 // Shown in the footer, FAQ, and llms.txt; written for takedown reviewers as much as users.

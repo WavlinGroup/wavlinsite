@@ -9,7 +9,7 @@ import NavBar from '../components/NavBar.vue'
     <div class="container">
       <header class="privacy-page__header">
         <h1>Privacy policy</h1>
-        <p class="privacy-page__intro">Plain-English details on what the Wavlin app and <a href="https://wavlin.cc">wavlin.cc</a> collect, why it’s needed, and how you stay in control.</p>
+        <p class="privacy-page__intro">Plain-English details on what the Wavlin app and this website collect, why it’s needed, and how you stay in control.</p>
         <p class="privacy-page__date">Draft: this policy has not been reviewed yet and may change before it is final.</p>
       </header>
 
@@ -27,7 +27,7 @@ import NavBar from '../components/NavBar.vue'
 
         <section>
           <h2>Website hosting</h2>
-          <p><a href="https://wavlin.cc">wavlin.cc</a> is a static site hosted on Cloudflare. It sets no cookies and loads no tracking, ad, or analytics scripts. Cloudflare receives standard connection details needed to serve pages (such as your IP address, browser info, requested URL, and timestamp) under <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare’s privacy policy</a>.</p>
+          <p>This website is a static site hosted on Cloudflare. It sets no cookies and loads no tracking, ad, or analytics scripts. Cloudflare receives standard connection details needed to serve pages (such as your IP address, browser info, requested URL, and timestamp) under <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare’s privacy policy</a>.</p>
           <p>To show the latest download and star count, your browser fetches public release and repo info from GitHub, which receives standard connection details under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub’s privacy statement</a>.</p>
         </section>
 
