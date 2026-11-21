@@ -1,0 +1,138 @@
+import { DOWNLOAD_PLATFORMS } from '../src/content/downloads'
+import { FAQ_ITEMS } from '../src/content/faq'
+import { FEATURES } from '../src/content/features'
+import { EXPORT_FORMATS } from '../src/content/lyrics/export'
+import { IMPORT_FORMATS } from '../src/content/lyrics/import'
+import { HOSTING_NOTICE, PAGE_META, REPO_URL as REPO, SITE_URL } from '../src/content/site'
+
+// shortcut: conversion covers simple legal markup (headings, paragraphs, lists, links, bold); use a parser if templates get nested.
+export function htmlToMarkdown(html: string) {
+  return html
+    // Keep tags and named/numeric entities separate so they survive text escaping.
+    .split(/(<[^>]+>|&(?:#\d+|#x[\da-f]+|[a-z][a-z\d]+);)/gi)
+    // Escape literal Markdown punctuation; odd-indexed tags/entities stay intact for later conversion.
+    .map((part, index) => index % 2 ? part : part.replace(/[\\`*_[\]{}()#+.!|>~-]/g, '\\$&'))
+    .join('')
+    // Remove template whitespace before lists and wrappers so it cannot indent Markdown bullets.
+    .replace(/\s*(<\/?(?:ul|li|section|article|header)\b)/g, '$1')
+    // Keep each anchor's label and href as a Markdown link before stripping HTML tags.
+    .replace(/<a [^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g, '[$2]($1)')
+    // Turn <strong> boundaries into Markdown bold markers.
+    .replace(/<\/?strong>/g, '**')
+    // Preserve h1–h3 levels as # headings, separated from surrounding content.
+    .replace(/<h([1-3])[^>]*>([\s\S]*?)<\/h\1>/g, (_, level, text) => `\n\n${'#'.repeat(Number(level))} ${text}\n\n`)
+    // Put each list item on its own Markdown bullet line.
+    .replace(/<li>([\s\S]*?)<\/li>/g, '\n- $1')
+    // Separate paragraphs with blank lines so adjacent blocks do not run together.
+    .replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '\n\n$1\n\n')
+    // Drop remaining markup after extracting the supported Markdown structure.
+    .replace(/<[^>]+>/g, '')
+    // Collapse spaces and tabs without losing paragraph or list line breaks.
+    .replace(/[ \t]+/g, ' ')
+    // Remove spaces around line breaks to avoid accidental indentation or hard breaks.
+    .replace(/ *\n */g, '\n')
+    // Keep at most one blank line between blocks.
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+export function homeMarkdown() {
+  return `# Wavlin
+
+> ${PAGE_META.home.description}
+
+Source code: ${REPO} (GPL-3.0).
+
+Source: ${SITE_URL}/
+
+## Features
+
+${FEATURES.map(feature => `- **${feature.label}:** ${feature.body}`).join('\n')}
+
+## Installation
+
+Download builds from ${REPO}/releases/latest.
+
+${DOWNLOAD_PLATFORMS.map(platform => `### ${platform.name}
+
+${platform.detail}. Package: ${platform.package}. Architectures: ${platform.architectures.map(({ name }) => name).join(', ')}.
+
+${platform.instructions.map((step, index) => `${index + 1}. ${step}`).join('\n')}`).join('\n\n')}
+`
+}
+
+export function faqMarkdown() {
+  return `# Wavlin FAQ
+
+Source: ${SITE_URL}/faq
+
+${FAQ_ITEMS.map(({ question, answer }) => `## ${question}\n\n${answer}`).join('\n\n')}
+`
+}
+
+export function syncMarkdown() {
+  const imports = Object.entries(IMPORT_FORMATS).filter(([key]) => key !== 'auto').map(([, label]) => label)
+  return `# Lyrics sync
+
+${PAGE_META.sync.description}
+
+Source: ${SITE_URL}/sync
+
+## How it works
+
+1. Pick your song audio. It plays straight from your device and never gets uploaded.
+2. Paste lyrics or open a lyrics file. Existing timings are kept so you can just tweak them.
+3. In line mode, tap Space or the pad when each line starts. In word mode, hold for sustained words, or tap quickly to let a word run until your next tap.
+4. Fine-tune with nudges, edits, undo, and preview, then export.
+
+Drafts save locally in your browser, so refreshing won’t wipe your progress.
+
+## Import formats
+
+${imports.map(label => `- ${escapeMarkdown(label)}`).join('\n')}
+
+## Export formats
+
+${Object.values(EXPORT_FORMATS).map(format => `- ${escapeMarkdown(format.label)}: ${escapeMarkdown(format.detail)}`).join('\n')}
+
+MLX is the default and keeps every timing, singer, background vocal, translation, and romanization.
+`
+}
+
+export function privacyMarkdown(vueSource: string) {
+  const template = vueSource.match(/<header class="privacy-page__header">([\s\S]*?)<\/article>/)?.[1]
+  if (!template) throw new Error('Privacy policy content was not found')
+  return `${htmlToMarkdown(template)}\n\nSource: ${SITE_URL}/privacy\n`
+}
+
+const escapeMarkdown = (text: string) => text
+  .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+  .replace(/[\\`*_[\]{}()#+.!|~-]/g, '\\$&')
+
+export function llmsTxt() {
+  return `# Wavlin
+
+> ${PAGE_META.home.description}
+
+Wavlin is free and open source (GPL-3.0). It is not affiliated with YouTube or Google, and it is not published on the Play Store; official builds come only from GitHub Releases.
+
+${HOSTING_NOTICE}
+
+Each Markdown page names its canonical HTML source.
+
+## Pages
+
+- [Overview](${SITE_URL}/index.md): features and install steps
+- [FAQ](${SITE_URL}/faq.md): install, accounts, safety, updates, and sharing
+- [Lyrics sync](${SITE_URL}/sync.md): time lyrics in the browser and export MLX, LRC, Enhanced LRC, or TTML
+- [Privacy policy](${SITE_URL}/privacy.md): draft policy for app data and website hosting
+- [Everything in one file](${SITE_URL}/llms-full.txt): HTML page text
+
+## Project
+
+- [Source code](${REPO})
+- [Latest release](${REPO}/releases/latest)
+- [Issue tracker](${REPO}/issues)
+`
+}
+

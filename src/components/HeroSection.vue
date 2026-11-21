@@ -1,0 +1,205 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { getLatestRelease } from '../content/downloads'
+import DownloadDialog from './DownloadDialog.vue'
+
+const repoStats = ref({ stars: '—', version: 'Latest' })
+const compactNumber = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 })
+
+onMounted(async () => {
+  const [repoResult, releaseResult] = await Promise.allSettled([
+    fetch('https://api.github.com/repos/WavlinGroup/Wavlin').then(response => {
+      if (!response.ok) throw new Error(`GitHub returned ${response.status}`)
+      return response.json() as Promise<{ stargazers_count?: number }>
+    }),
+    getLatestRelease(),
+  ])
+  if (repoResult.status === 'fulfilled' && repoResult.value.stargazers_count != null) {
+    repoStats.value.stars = compactNumber.format(repoResult.value.stargazers_count)
+  }
+  if (releaseResult.status === 'fulfilled') repoStats.value.version = releaseResult.value.tag_name ?? 'Latest'
+})
+</script>
+
+<template>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero__layout">
+        <div class="hero__copy">
+          <h1 id="hero-title">Music <span>without the noise</span></h1>
+          <p class="hero__lede">
+            A free, open-source YouTube Music player for Android. No ads, no clutter, just your music.
+          </p>
+          <div class="hero__actions">
+            <DownloadDialog button-class="btn btn-filled btn-lg" />
+            <a href="https://github.com/WavlinGroup/Wavlin" class="btn btn-outlined btn-lg" target="_blank" rel="noopener noreferrer">
+              <span class="material-symbols-rounded" aria-hidden="true">code</span>
+              View source
+            </a>
+          </div>
+        </div>
+
+        <div class="hero__signal">
+          <span class="hero__signal-icon material-symbols-rounded" aria-hidden="true">phone_android</span>
+          <div>
+            <strong>Made for Android</strong>
+            <p>Ad-free playback, synced lyrics, offline downloads, and Listen Together on your phone.</p>
+          </div>
+          <dl class="hero__stats" aria-label="Wavlin repository statistics">
+            <div><dt>License</dt><dd>GPL-3.0</dd></div>
+            <div><dt>Stars</dt><dd>{{ repoStats.stars }}</dd></div>
+            <div><dt>Latest</dt><dd>{{ repoStats.version }}</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.hero {
+  padding: 32px 0 86px;
+  background: var(--md-sys-color-surface);
+}
+
+.hero__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+  gap: 24px;
+  padding: clamp(32px, 6vw, 72px);
+  border-radius: 44px 44px 18px 44px;
+  background: var(--md-sys-color-surface-container-low);
+}
+
+.hero__copy {
+  max-width: 830px;
+}
+
+.hero h1 {
+  max-width: 860px;
+  margin: 0 0 26px;
+  font: var(--md-sys-typescale-display-large);
+  letter-spacing: var(--md-sys-typescale-display-large-tracking);
+}
+
+.hero h1 span {
+  color: var(--md-sys-color-primary);
+}
+
+.hero__lede {
+  max-width: 680px;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-large);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.hero__signal {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 330px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: end;
+  padding: 28px;
+  overflow: hidden;
+  border-radius: 28px 64px 28px 64px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.hero__signal-icon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: -1;
+  color: currentColor;
+  font-size: clamp(96px, 10vw, 136px);
+  opacity: 0.12;
+  transform: rotate(-8deg);
+}
+
+.hero__signal strong {
+  display: block;
+  margin-bottom: 10px;
+  font: var(--md-sys-typescale-headline-medium);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+}
+
+.hero__signal p {
+  font: var(--md-sys-typescale-body-medium);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.hero__stats div {
+  min-width: 0;
+}
+
+.hero__stats dt {
+  margin-bottom: 3px;
+  font: var(--md-sys-typescale-label-small);
+  font-variation-settings: 'ROND' 100;
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+}
+
+.hero__stats dd {
+  min-height: 20px;
+  font: var(--md-sys-typescale-title-medium);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .hero__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__signal {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 14px 0 64px;
+  }
+
+  .hero__layout {
+    gap: 32px;
+    padding: 30px 24px;
+    border-radius: 30px 30px 14px 30px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.75rem, 12vw, 4.5rem);
+  }
+
+  .hero__signal {
+    min-height: 220px;
+    padding: 24px;
+    border-radius: 24px 52px 24px 52px;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .hero__actions :deep(.btn),
+  .hero__actions > .btn {
+    width: 100%;
+  }
+
+}
+</style>
