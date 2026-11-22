@@ -23,3 +23,7 @@ invocation_logs = true
 enabled = false
 persist = true
 head_sampling_rate = 1
+
+[[kv_namespaces]]
+binding = "CARDS"
+id = "b8950c45709745a6b5bd390718399774"
