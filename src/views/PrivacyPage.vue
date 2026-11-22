@@ -55,7 +55,7 @@ import NavBar from '../components/NavBar.vue'
 <style scoped>
 .privacy-page {
   padding: clamp(56px, 8vw, 104px) 0 120px;
-  background: var(--md-sys-color-surface);
+  background: transparent;
 }
 
 .privacy-page__header,

@@ -113,7 +113,7 @@ async function copyCode() {
 .listen {
   min-height: 100vh;
   padding-bottom: 80px;
-  background: var(--md-sys-color-surface);
+  background: transparent;
 }
 
 .listen__inner {
@@ -143,7 +143,7 @@ async function copyCode() {
   height: 44px;
   place-items: center;
   border-radius: 16px 16px 8px 16px;
-  background: var(--md-sys-color-primary-container);
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 58%, transparent);
 }
 
 .listen__brand img {
@@ -158,7 +158,7 @@ async function copyCode() {
   align-items: end;
   padding: clamp(32px, 6vw, 64px);
   border-radius: 44px 44px 16px 44px;
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--glass-bg);
 }
 
 .listen h1 {
@@ -197,7 +197,7 @@ async function copyCode() {
   margin-top: 16px;
   padding: 30px 36px;
   border-radius: 16px 40px 40px 40px;
-  background: var(--md-sys-color-primary-container);
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 58%, transparent);
   color: var(--md-sys-color-on-primary-container);
 }
 
@@ -234,7 +234,7 @@ async function copyCode() {
 
 .listen__empty {
   justify-content: flex-start;
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
   color: var(--md-sys-color-on-surface);
 }
 
@@ -242,7 +242,7 @@ async function copyCode() {
   width: 56px;
   height: 56px;
   border-radius: var(--md-sys-shape-corner-large-increased);
-  background: var(--md-sys-color-surface-container-highest);
+  background: var(--glass-bg-strong);
   color: var(--md-sys-color-primary);
   font-size: 30px;
 }
@@ -271,12 +271,12 @@ async function copyCode() {
   align-items: flex-start;
   padding: 32px;
   border-radius: 40px 40px 16px 40px;
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
 }
 
 .listen__guides article:nth-child(2) {
   border-radius: 40px 16px 40px 40px;
-  background: var(--md-sys-color-tertiary-container);
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 58%, transparent);
   color: var(--md-sys-color-on-tertiary-container);
 }
 
@@ -380,5 +380,13 @@ async function copyCode() {
   .listen__guides .btn {
     margin-top: 26px;
   }
+}
+
+.listen__hero,
+.listen__empty,
+.listen__guide {
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 </style>

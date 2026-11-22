@@ -628,7 +628,7 @@ const SHORTCUTS = [
 .sync {
   min-height: 100vh;
   padding-bottom: 64px;
-  background: var(--md-sys-color-surface);
+  background: transparent;
 }
 
 .sync--dragging {
@@ -669,7 +669,7 @@ const SHORTCUTS = [
   height: 44px;
   place-items: center;
   border-radius: 16px 16px 8px 16px;
-  background: var(--md-sys-color-primary-container);
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 58%, transparent);
 }
 
 .sync__brand img {
@@ -704,7 +704,7 @@ const SHORTCUTS = [
 .sync-setup__hero {
   padding: clamp(28px, 5vw, 56px);
   border-radius: 44px 44px 16px 44px;
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--glass-bg);
 }
 
 .sync-setup h1 {
@@ -731,7 +731,7 @@ const SHORTCUTS = [
   margin-top: 12px;
   padding: 20px 24px;
   border-radius: 16px 36px 36px 36px;
-  background: var(--md-sys-color-primary-container);
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 58%, transparent);
   color: var(--md-sys-color-on-primary-container);
 }
 
@@ -771,11 +771,11 @@ const SHORTCUTS = [
   min-width: 0;
   padding: 28px;
   border-radius: 40px 40px 16px 40px;
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
 }
 
 .sync-setup__card--audio {
-  background: var(--md-sys-color-tertiary-container);
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 58%, transparent);
   color: var(--md-sys-color-on-tertiary-container);
 }
 
@@ -832,7 +832,7 @@ const SHORTCUTS = [
   padding: 12px 14px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 14px;
-  background: var(--md-sys-color-surface-container-lowest);
+  background: color-mix(in srgb, #000 38%, transparent);
   color: var(--md-sys-color-on-surface);
   font: var(--md-sys-typescale-body-medium);
 }
@@ -925,7 +925,7 @@ const SHORTCUTS = [
   justify-content: space-between;
   gap: 12px;
   padding: 12px 4px 14px;
-  background: var(--md-sys-color-surface);
+  background: color-mix(in srgb, #121113 55%, transparent);
 }
 
 .sync-lyrics__header h1 {
@@ -942,7 +942,7 @@ const SHORTCUTS = [
   display: flex;
   padding: 4px;
   border-radius: var(--md-sys-shape-corner-full);
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
 }
 
 .sync-segmented button {
@@ -1033,7 +1033,7 @@ const SHORTCUTS = [
 }
 
 .sync-lyrics__end--current {
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
   color: var(--md-sys-color-on-surface);
 }
 
@@ -1044,7 +1044,7 @@ const SHORTCUTS = [
   gap: 14px;
   padding: 20px;
   border-radius: 32px 32px 12px 32px;
-  background: var(--md-sys-color-surface-container);
+  background: var(--glass-bg);
 }
 
 .sync-dock__audio {
@@ -1053,7 +1053,7 @@ const SHORTCUTS = [
   justify-items: start;
   padding: 14px 16px;
   border-radius: 18px;
-  background: var(--md-sys-color-tertiary-container);
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 58%, transparent);
   color: var(--md-sys-color-on-tertiary-container);
   font: var(--md-sys-typescale-body-medium);
 }
@@ -1103,7 +1103,7 @@ const SHORTCUTS = [
   height: 48px;
   padding-left: 10px;
   border-radius: 24px;
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
 }
 
 .sync-transport__rate .material-symbols-rounded {
@@ -1150,7 +1150,7 @@ const SHORTCUTS = [
 }
 
 .sync-pad:disabled {
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
   color: var(--md-sys-color-outline);
   cursor: not-allowed;
 }
@@ -1231,7 +1231,7 @@ kbd {
   min-width: 28px;
   padding: 3px 8px;
   border-radius: 8px;
-  background: var(--md-sys-color-surface-container-highest);
+  background: var(--glass-bg-strong);
   font: 600 0.75rem / 1.4 ui-monospace, monospace;
   text-align: center;
 }
@@ -1260,15 +1260,15 @@ kbd {
     gap: 10px;
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
     border-radius: 28px 28px 0 0;
-    background: var(--md-sys-color-surface-container-high);
+    background: var(--glass-bg-strong);
   }
 
   .sync-transport .icon-button:not(.sync-transport__play) {
-    background: var(--md-sys-color-surface-container-highest);
+    background: var(--glass-bg-strong);
   }
 
   .sync-transport__rate {
-    background: var(--md-sys-color-surface-container-highest);
+    background: var(--glass-bg-strong);
   }
 
   .sync-pad {
@@ -1346,5 +1346,19 @@ kbd {
   .sync-player__time {
     font-size: 0.75rem;
   }
+}
+
+.sync-setup__hero,
+.sync-setup__card,
+.sync-dock,
+.sync-lyrics__header,
+.sync-lyrics__end--current {
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+}
+
+.sync-lyrics__header {
+  border: 0;
 }
 </style>

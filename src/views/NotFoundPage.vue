@@ -30,7 +30,7 @@ import NavBar from '../components/NavBar.vue'
 .not-found__panel {
   padding: clamp(36px, 8vw, 88px);
   border-radius: 44px 44px 16px 44px;
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--glass-bg);
 }
 
 .not-found__code {
@@ -54,5 +54,11 @@ import NavBar from '../components/NavBar.vue'
   color: var(--md-sys-color-on-surface-variant);
   font: var(--md-sys-typescale-body-large);
   letter-spacing: var(--md-sys-typescale-body-large-tracking);
+}
+
+.not-found__panel {
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 </style>

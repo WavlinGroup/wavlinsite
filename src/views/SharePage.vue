@@ -110,7 +110,7 @@ onMounted(() => {
   width: min(100%, 480px);
   height: 24px;
   margin-bottom: 20px;
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
 }
 
 .share-page__loading span + span {

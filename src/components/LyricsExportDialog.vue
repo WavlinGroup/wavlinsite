@@ -121,7 +121,7 @@ defineExpose({ open })
   max-height: min(900px, 100% - 24px);
   margin: auto;
   border-radius: 32px 32px 12px 32px;
-  background: var(--md-sys-color-surface-container);
+  background: var(--glass-bg);
 }
 
 .export-dialog__inner {
@@ -161,7 +161,7 @@ legend {
   align-items: flex-start;
   padding: 12px 16px;
   border-radius: 18px;
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
   cursor: pointer;
 }
 
@@ -226,7 +226,7 @@ textarea {
   padding: 10px 14px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 12px;
-  background: var(--md-sys-color-surface-container-lowest);
+  background: color-mix(in srgb, #000 38%, transparent);
   color: var(--md-sys-color-on-surface);
   font: var(--md-sys-typescale-body-medium);
 }
@@ -268,7 +268,7 @@ textarea:focus {
   bottom: 0;
   margin: 0 -24px -24px;
   padding: 16px 24px 24px;
-  background: var(--md-sys-color-surface-container);
+  background: var(--glass-bg);
 }
 
 .export-dialog__actions {
@@ -308,5 +308,11 @@ textarea:focus {
   .export-dialog__actions .btn {
     flex: 1;
   }
+}
+
+.export-dialog {
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 </style>

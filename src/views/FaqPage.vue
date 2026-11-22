@@ -76,7 +76,7 @@ const topicGroups = FAQ_TOPICS.map(topic => ({
 <style scoped>
 .faq-page {
   padding: clamp(40px, 6vw, 80px) 0 104px;
-  background: var(--md-sys-color-surface);
+  background: transparent;
   overflow-wrap: anywhere;
 }
 
@@ -176,7 +176,7 @@ const topicGroups = FAQ_TOPICS.map(topic => ({
 }
 
 .faq-page__questions details[open] {
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--glass-bg);
 }
 
 .faq-page__question {
@@ -300,5 +300,11 @@ const topicGroups = FAQ_TOPICS.map(topic => ({
   .faq-page__answer p {
     padding-right: 16px;
   }
+}
+
+.faq-page__questions {
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 </style>
