@@ -24,29 +24,58 @@ const PAGE = `<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wavlin \u2013 Shared playlist</title>
-<meta name="theme-color" content="#121212">
+<meta name="theme-color" content="#121113">
 <!--OG-->
 <style>
-  :root { --accent: #c9a8c4; --bg: #121212; --card: #1e1e1e; --text: #f2f2f2; --muted: #a8a8a8; }
+  @font-face {
+    font-family: 'Google Sans Flex';
+    src: url('/fonts/GoogleSansFlex.woff2?v=2') format('woff2');
+    font-weight: 400 850; font-display: swap;
+  }
+  :root {
+    color-scheme: dark;
+    --surface: #121113; --on-surface: #ebe4eb; --on-surface-variant: #cec4cf;
+    --primary: #d9b9ff; --on-primary: #3b1f55;
+    --glass-bg: color-mix(in srgb, #ffffff 6%, transparent);
+    --glass-bg-strong: color-mix(in srgb, #ffffff 11%, transparent);
+    --glass-border: color-mix(in srgb, #ffffff 14%, transparent);
+    --glass-filter: blur(22px) saturate(1.6);
+    --glass-shadow: inset 0 1px 0 #ffffff1f, 0 10px 40px -14px #000000b3;
+  }
   * { box-sizing: border-box; }
   body {
-    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle at 50% 0%, #2a2230 0%, var(--bg) 60%);
-    color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    position: relative; isolation: isolate; overflow-x: hidden;
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 0;
+    background: var(--surface); color: var(--on-surface);
+    font: 400 1rem / 1.5 'Google Sans Flex', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  body::before {
+    content: ''; position: fixed; inset: -10vmax; z-index: -1; opacity: .55; filter: blur(40px); pointer-events: none;
+    background:
+      radial-gradient(40vmax 34vmax at 12% 8%, #6a3fb3 0%, transparent 60%),
+      radial-gradient(36vmax 32vmax at 92% 30%, #1d3fc4 0%, transparent 60%),
+      radial-gradient(40vmax 34vmax at 30% 95%, #8a6d12 0%, transparent 62%);
   }
   .card {
-    width: min(92vw, 420px); padding: 32px 24px; border-radius: 28px;
-    background: var(--card); text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,.45);
+    width: min(92vw, 420px); padding: 36px 24px 28px; text-align: center;
+    border: 1px solid var(--glass-border); border-radius: 44px 44px 16px 44px;
+    background: var(--glass-bg); box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: var(--glass-filter); backdrop-filter: var(--glass-filter);
   }
-  .brand { font-weight: 700; letter-spacing: .08em; color: var(--accent); font-size: 14px; text-transform: uppercase; }
-  h1 { margin: 12px 0 6px; font-size: 24px; word-break: break-word; }
-  p { margin: 0 0 24px; color: var(--muted); font-size: 15px; line-height: 1.45; }
+  .brand { font-weight: 620; letter-spacing: .08em; color: var(--primary); font-size: 14px; text-transform: uppercase; font-variation-settings: 'ROND' 100; }
+  h1 { margin: 12px 0 6px; font-size: 28px; line-height: 1.15; font-weight: 600; letter-spacing: -0.015em; word-break: break-word; }
+  p { margin: 0 0 24px; color: var(--on-surface-variant); font-size: 15px; line-height: 1.5; }
   .btn {
-    display: block; width: 100%; padding: 15px; margin-top: 12px; border-radius: 999px;
-    font-size: 16px; font-weight: 600; text-decoration: none; border: 0;
+    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin-top: 12px; padding: 14px 26px;
+    border-radius: 28px; font: 620 1.0625rem / 1.3 'Google Sans Flex', system-ui, sans-serif; font-variation-settings: 'ROND' 100;
+    text-decoration: none; border: 0; -webkit-tap-highlight-color: transparent; transition: border-radius 350ms cubic-bezier(0.42, 1.67, 0.21, 0.9);
   }
-  .primary { background: var(--accent); color: #1a1220; }
-  .secondary { background: transparent; color: var(--text); border: 1px solid #3a3a3a; }
+  .btn:active { border-radius: 16px; }
+  .primary { background: var(--primary); color: var(--on-primary); }
+  .secondary {
+    color: var(--primary); border: 1px solid var(--glass-border); background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: var(--glass-filter); backdrop-filter: var(--glass-filter);
+  }
   .hidden { display: none; }
 </style>
 </head>
