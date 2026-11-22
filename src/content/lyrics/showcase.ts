@@ -5,9 +5,6 @@ import { lineText } from './model'
 export const SHOWCASE_TRACK = { title: 'Always', artist: 'Daniel Caesar', durationSec: 222 } as const
 export const LRCLIB_SEARCH_URL = 'https://lrclib.net/api/search'
 const TAIL_MS = 4000
-// Loop window in song time. Uncalibrated pick from the user's screen recording (0:41 to 1:09 shows the hook); tune these two values.
-export const LOOP_FROM_MS = 41_000
-export const LOOP_TO_MS = 69_000
 
 export type TimedLine = { startMs: number; text: string }
 export type LrclibHit = { trackName?: string; artistName?: string; duration?: number; syncedLyrics?: string | null }
@@ -33,8 +30,8 @@ export function activeIndex(lines: readonly TimedLine[], timeMs: number): number
 
 export type LoopWindow = { startMs: number; endMs: number }
 
-/** Loop from the start of the line sung at `fromMs` through the end of the line sung at `toMs`. */
-export function loopWindow(lines: readonly TimedLine[], fromMs = LOOP_FROM_MS, toMs = LOOP_TO_MS): LoopWindow {
+/** Loop from the line sung at `fromMs` through the line sung at `toMs`; the whole song by default. */
+export function loopWindow(lines: readonly TimedLine[], fromMs = 0, toMs = Infinity): LoopWindow {
   if (!lines.length) return { startMs: 0, endMs: 0 }
   const first = Math.max(0, activeIndex(lines, fromMs))
   const last = Math.max(first, activeIndex(lines, toMs))

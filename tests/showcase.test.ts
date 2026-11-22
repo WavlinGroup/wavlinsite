@@ -41,5 +41,6 @@ test('loopWindow spans the lines sung at the two timestamps', () => {
   const lines = toTimedLines(LRC)
   expect(loopWindow(lines, 4000, 4000)).toEqual({ startMs: 3500, endMs: 8000 })
   expect(loopWindow(lines, 0, 9000)).toEqual({ startMs: 1000, endMs: 12000 })
+  expect(loopWindow(lines)).toEqual({ startMs: 1000, endMs: 12000 })
   expect(loopWindow([])).toEqual({ startMs: 0, endMs: 0 })
 })

@@ -64,6 +64,7 @@ onBeforeUnmount(() => {
 
 <template>
   <figure ref="root" class="showcase" :aria-label="`${SHOWCASE_TRACK.title} by ${SHOWCASE_TRACK.artist}, synced lyrics preview`">
+    <div class="showcase__backdrop" aria-hidden="true" />
     <div class="showcase__glow" aria-hidden="true"><i /><i /><i /></div>
 
     <div class="showcase__stage" aria-hidden="true">
@@ -102,6 +103,16 @@ onBeforeUnmount(() => {
   border-radius: 28px;
   background: linear-gradient(180deg, var(--blue-hi) 0%, var(--blue-mid) 42%, var(--blue-lo) 100%);
   box-shadow: inset 0 1px 0 #ffffff2e, 0 18px 60px -18px #1d3fc499;
+}
+
+.showcase__backdrop {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  background: url('/images/always-cover.jpg') center / cover no-repeat;
+  filter: blur(40px) saturate(1.5);
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 .showcase__glow {
@@ -207,7 +218,7 @@ onBeforeUnmount(() => {
   width: 52px;
   height: 52px;
   border-radius: 10px;
-  background: radial-gradient(circle at 40% 45%, #bcd0ff 0 8%, transparent 9%), linear-gradient(160deg, #3b63e8, #0a0f55);
+  background: #0a0f55 url('/images/always-cover.jpg') center / cover no-repeat;
   box-shadow: 0 0 22px #3d6bff80;
 }
 
