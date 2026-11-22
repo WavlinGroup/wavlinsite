@@ -1,8 +1,8 @@
 // Wavlin share server + link previews, served by the wavlinsite Worker.
 //
-//   POST /p               {name, ids[], card?(base64 jpeg)} -> {code}   stores a shared playlist
+//   POST /p               {name, ids[], tracks?[], card?(base64 jpeg)} -> {code}   stores a shared playlist
 //   GET  /p/<code>        share page (Open Graph tags, hands the playlist to the app)
-//   GET  /p/<code>.json   {name, ids[]}  (the app reads this when it opens a short link)
+//   GET  /p/<code>.json   {name, ids[], tracks?[]}  (tracks keep each song's own title/artists/picture)  (the app reads this when it opens a short link)
 //   GET  /card/<id>.jpg   the card picture used as the link preview
 //   POST /card/<id>       stores a card picture for a synced playlist id (kept once)
 //   GET  /?list=<id> | /?name=..&ids=..   older link formats
@@ -173,6 +173,36 @@ function renderPage({ title, desc, image, url, search }) {
   });
 }
 
+const str = (value, max) => (typeof value === "string" ? value.slice(0, max) : "");
+
+// Per-track metadata sent by the app, so a receiver sees the exact versions that were shared.
+function cleanTracks(input, ids) {
+  if (!Array.isArray(input)) return [];
+  const allowed = new Set(ids);
+  const seen = new Set();
+  const out = [];
+  for (const item of input.slice(0, MAX_IDS)) {
+    if (!item || typeof item !== "object") continue;
+    const id = str(item.id, 11);
+    const title = str(item.title, 300);
+    if (!allowed.has(id) || seen.has(id) || !title) continue;
+    seen.add(id);
+    out.push({
+      id,
+      title,
+      artists: (Array.isArray(item.artists) ? item.artists : []).slice(0, 10)
+        .map((a) => ({ name: str(a && a.name, 200), id: str(a && a.id, 64) }))
+        .filter((a) => a.name),
+      album: str(item.album, 300),
+      albumId: str(item.albumId, 64),
+      duration: Number.isFinite(item.duration) ? Math.max(-1, Math.min(86400, Math.trunc(item.duration))) : -1,
+      thumbnail: /^https:\/\//.test(str(item.thumbnail, 600)) ? str(item.thumbnail, 600) : "",
+      explicit: item.explicit === true,
+    });
+  }
+  return out;
+}
+
 async function createPlaylist(request, env) {
   let data;
   try {
@@ -183,6 +213,7 @@ async function createPlaylist(request, env) {
   const ids = Array.isArray(data.ids) ? data.ids.filter((id) => VIDEO_ID_PATTERN.test(id)).slice(0, MAX_IDS) : [];
   if (ids.length === 0) return json({ error: "no tracks" }, 400);
   const name = String(data.name || "").slice(0, 100) || "Shared playlist";
+  const tracks = cleanTracks(data.tracks, ids);
 
   let card = null;
   if (data.card) {
@@ -195,7 +226,7 @@ async function createPlaylist(request, env) {
   }
 
   const code = newCode();
-  await env.CARDS.put("pl:" + code, JSON.stringify({ name, ids }), { expirationTtl: TTL_SECONDS });
+  await env.CARDS.put("pl:" + code, JSON.stringify(tracks.length ? { name, ids, tracks } : { name, ids }), { expirationTtl: TTL_SECONDS });
   if (card) await env.CARDS.put("card:" + code, card, { expirationTtl: TTL_SECONDS });
   return json({ code }, 201);
 }
