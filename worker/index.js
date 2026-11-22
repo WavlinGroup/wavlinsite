@@ -87,7 +87,6 @@ const PAGE = `<!DOCTYPE html>
   <h1 id="title">Shared playlist</h1>
   <p id="subtitle">Open this playlist in Wavlin.</p>
   <a id="open" class="btn primary" href="#">Open in Wavlin</a>
-  <a id="openTest" class="btn secondary hidden" href="#">Open in Wavlin Testing</a>
   <a id="youtube" class="btn secondary hidden" href="#">Open in YouTube Music</a>
   <a id="get" class="btn secondary" href="${RELEASES_URL}">Get Wavlin</a>
 </main>
@@ -133,12 +132,6 @@ const PAGE = `<!DOCTYPE html>
   var open = document.getElementById('open');
   open.href = target;
 
-  // Test build (com.wavlin.music.test) has its own package, so it gets an explicit button.
-  if (isAndroid) {
-    var test = document.getElementById('openTest');
-    test.href = intentUrl.replace('#Intent;scheme=wavlin;', '#Intent;scheme=wavlin;package=com.wavlin.music.test;');
-    test.classList.remove('hidden');
-  }
 
   // No automatic launch: Chrome blocks package-less intents without a tap and would jump to the
   // fallback URL instead, so the buttons (a real tap) do the opening.
