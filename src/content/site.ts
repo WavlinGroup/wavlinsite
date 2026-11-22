@@ -16,8 +16,8 @@ export type PageMeta = {
 
 export const PAGE_META = {
   home: {
-    title: 'Wavlin · Music without the noise',
-    description: 'A free, open-source YouTube Music player for Android. No ads, background play, synced lyrics, offline downloads, and casting.',
+    title: 'Wavlin · Your music, uninterrupted',
+    description: 'A free, open-source YouTube Music client with background play, synced lyrics, offline downloads, casting, and Listen Together.',
     robots: INDEX,
   },
   faq: {

@@ -24,10 +24,9 @@ onMounted(async () => {
 <template>
   <section class="hero" aria-labelledby="hero-title">
     <div class="container hero__layout">
-      <p class="hero__badge glass">Made for Android</p>
-      <h1 id="hero-title">Music <span>without the noise</span></h1>
+      <h1 id="hero-title">Your music, <span>uninterrupted</span></h1>
       <p class="hero__lede">
-        A free, open-source YouTube Music player for Android. No ads, no clutter, just your music.
+        Wavlin is a free, open-source YouTube Music client. Listen in the background, follow synced lyrics, and take your library offline.
       </p>
       <div class="hero__actions">
         <DownloadDialog button-class="btn btn-filled btn-lg" />
@@ -37,7 +36,7 @@ onMounted(async () => {
         </a>
       </div>
       <div class="hero__signal glass">
-        <p>Ad-free playback, synced lyrics, offline downloads, and Listen Together on your phone.</p>
+        <p>Background play, word-by-word lyrics, offline downloads, and rooms to listen together with friends.</p>
         <dl class="hero__stats" aria-label="Wavlin repository statistics">
           <div><dt>License</dt><dd>GPL-3.0</dd></div>
           <div><dt>Stars</dt><dd>{{ repoStats.stars }}</dd></div>
@@ -58,18 +57,6 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-
-.hero__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 28px;
-  padding: 8px 18px;
-  border-radius: var(--md-sys-shape-corner-full);
-  color: var(--md-sys-color-primary);
-  font: var(--md-sys-typescale-label-large);
-  font-variation-settings: 'ROND' 100;
 }
 
 .hero h1 {

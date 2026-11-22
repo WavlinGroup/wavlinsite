@@ -12,7 +12,7 @@ try {
 
   const index = 'index, follow, max-image-preview:large, max-snippet:-1'
   const expected = [
-    ['', 'Wavlin · Music without the noise', index, 'Music without the noise'],
+    ['', 'Wavlin · Your music, uninterrupted', index, 'Your music, uninterrupted'],
     ['faq', 'Wavlin FAQ · Install, sign in, update, and import playlists', index, 'Frequently asked questions'],
     ['listen?code=ABC123', 'Listen Together · Wavlin', 'noindex, follow', 'Join a listening room'],
   ]

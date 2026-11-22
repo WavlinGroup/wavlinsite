@@ -210,7 +210,7 @@ const home = {
     type: 17,
     accent_color: 14268927,
     components: [
-      { type: 9, components: [text(`## [Wavlin](${SITE_URL}/)\nMusic without the noise`)], accessory: button('Open', `${SITE_URL}/`) },
+      { type: 9, components: [text(`## [Wavlin](${SITE_URL}/)\nYour music, uninterrupted`)], accessory: button('Open', `${SITE_URL}/`) },
       { type: 14, divider: true, spacing: 1 },
       { type: 1, components: [button('Download', `${REPO_URL}/releases/latest`), button('Source', REPO_URL), button('FAQ', `${SITE_URL}/faq`), button('Privacy', `${SITE_URL}/privacy`)] },
       { type: 14, divider: true, spacing: 1 },
