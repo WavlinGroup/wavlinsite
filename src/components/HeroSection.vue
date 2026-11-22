@@ -24,7 +24,7 @@ onMounted(async () => {
 <template>
   <section class="hero" aria-labelledby="hero-title">
     <div class="container hero__layout">
-      <p class="hero__badge glass"><span class="material-symbols-rounded" aria-hidden="true">phone_android</span>Made for Android</p>
+      <p class="hero__badge glass">Made for Android</p>
       <h1 id="hero-title">Music <span>without the noise</span></h1>
       <p class="hero__lede">
         A free, open-source YouTube Music player for Android. No ads, no clutter, just your music.
@@ -65,15 +65,11 @@ onMounted(async () => {
   align-items: center;
   gap: 8px;
   margin-bottom: 28px;
-  padding: 8px 16px 8px 12px;
+  padding: 8px 18px;
   border-radius: var(--md-sys-shape-corner-full);
   color: var(--md-sys-color-primary);
   font: var(--md-sys-typescale-label-large);
   font-variation-settings: 'ROND' 100;
-}
-
-.hero__badge .material-symbols-rounded {
-  font-size: 20px;
 }
 
 .hero h1 {
