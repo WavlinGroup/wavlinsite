@@ -70,6 +70,7 @@ const links = [
 }
 
 .footer__brand img {
+  border-radius: 14px;
   width: 50px;
   height: 50px;
 }

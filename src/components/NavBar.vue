@@ -96,6 +96,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown,
 .navbar__brand-mark {
   width: 44px;
   height: 44px;
+  border-radius: 12px;
 }
 
 .navbar__links {
