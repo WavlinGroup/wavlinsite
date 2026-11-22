@@ -140,8 +140,8 @@ const PAGE = `<!DOCTYPE html>
     test.classList.remove('hidden');
   }
 
-  // Try once automatically; the button covers browsers that block unprompted app launches.
-  if (isAndroid) setTimeout(function () { location.href = target; }, 400);
+  // No automatic launch: Chrome blocks package-less intents without a tap and would jump to the
+  // fallback URL instead, so the buttons (a real tap) do the opening.
 })();
 </script>
 </body>
