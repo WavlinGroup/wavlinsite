@@ -25,7 +25,7 @@ import DownloadDialog from './DownloadDialog.vue'
 <style scoped>
 .download {
   padding: 84px 0;
-  background: var(--md-sys-color-surface) url('/images/platform-pattern.svg') left top / 666px auto repeat;
+  background: url('/images/platform-pattern.svg') left top / 666px auto repeat;
 }
 
 .download__panel {
@@ -35,7 +35,11 @@ import DownloadDialog from './DownloadDialog.vue'
   align-items: end;
   padding: clamp(32px, 6vw, 72px);
   border-radius: 52px 20px 52px 52px;
-  background: var(--md-sys-color-primary-container);
+  border: 1px solid var(--glass-border);
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 58%, transparent);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--glass-shadow);
   color: var(--md-sys-color-on-primary-container);
 }
 

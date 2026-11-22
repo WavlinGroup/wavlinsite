@@ -4,8 +4,8 @@ import { ShapeBackdrop } from 'material-shapes-ts/vue'
 import { DOWNLOAD_PLATFORMS, type DownloadPlatformKey } from '../content/downloads'
 import { FEATURES as features } from '../content/features'
 import DownloadDialog from './DownloadDialog.vue'
+import LyricsShowcase from './LyricsShowcase.vue'
 
-const lyrics = ['Never gonna give you up', 'Never gonna let you down', 'Never gonna say goodbye']
 const playbackControls = [['Tempo', '1.10×'], ['Pitch', '+1 st'], ['Sleep timer', '30 min'], ['Skip silence', 'On'], ['Normalize', 'On']]
 const animationsPaused = ref(false)
 const downloadDialog = ref<InstanceType<typeof DownloadDialog>>()
@@ -21,11 +21,7 @@ function openDownload(platform: DownloadPlatformKey) {
       <div class="features__grid">
         <article v-for="(feature, index) in features" :key="feature.label" class="features__card" :class="`features__card--${index + 1}`">
           <div class="features__top"><ShapeBackdrop :shape="feature.shape" :color="feature.iconBackground" class="features__icon"><span class="features__icon-glyph material-symbols-rounded" :style="{ color: feature.iconColor }" aria-hidden="true">{{ feature.icon }}</span></ShapeBackdrop><span class="features__label">{{ feature.label }}</span><button v-if="index === 1" type="button" class="lyrics-toggle" :aria-label="animationsPaused ? 'Resume lyrics animation' : 'Pause lyrics animation'" :aria-pressed="animationsPaused" @click="animationsPaused = !animationsPaused"><span class="material-symbols-rounded" aria-hidden="true">{{ animationsPaused ? 'play_arrow' : 'pause' }}</span></button></div>
-          <div v-if="index === 1" class="features__lyrics" aria-hidden="true">
-            <div v-for="(line, lineIndex) in lyrics" :key="line" class="lyrics-line" :style="{ '--line-delay': `${lineIndex === 0 ? 0 : (lineIndex - 3) * 3}s` }">
-              <span v-for="(word, wordIndex) in line.split(' ')" :key="wordIndex" class="lyrics-word" :style="{ '--word': wordIndex }">{{ word }}</span>
-            </div>
-          </div>
+          <LyricsShowcase v-if="index === 1" :paused="animationsPaused" />
           <ul v-if="index === 5" class="features__controls" aria-hidden="true">
             <li v-for="[name, value] in playbackControls" :key="name">{{ name }}<strong>{{ value }}</strong></li>
           </ul>
@@ -92,7 +88,11 @@ function openDownload(platform: DownloadPlatformKey) {
   padding: 28px;
   overflow: hidden;
   border-radius: 28px;
-  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--glass-shadow);
 }
 
 .features__card--1,
@@ -102,14 +102,18 @@ function openDownload(platform: DownloadPlatformKey) {
 }
 
 .features__card--1 {
-  background: var(--md-sys-color-primary-container);
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 52%, transparent);
   color: var(--md-sys-color-on-primary-container);
   border-radius: 28px 72px 28px 28px;
 }
 
 .features__card--2 {
-  container-type: inline-size;
-  background: #302d21;
+  padding: 14px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   border-radius: 28px 28px 72px 28px;
 }
 
@@ -131,7 +135,6 @@ function openDownload(platform: DownloadPlatformKey) {
   min-height: 180px;
   align-items: center;
   column-gap: 40px;
-  background: var(--md-sys-color-surface-container-high);
 }
 
 .features__card--6 .features__copy {
@@ -154,7 +157,8 @@ function openDownload(platform: DownloadPlatformKey) {
   gap: 8px;
   padding: 8px 12px;
   border-radius: 8px;
-  background: var(--md-sys-color-surface-container-highest);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg-strong);
   font: var(--md-sys-typescale-label-large);
   letter-spacing: var(--md-sys-typescale-label-large-tracking);
 }
@@ -220,6 +224,22 @@ function openDownload(platform: DownloadPlatformKey) {
   max-width: 65ch;
 }
 
+.features__card--2 .features__top {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  z-index: 3;
+}
+
+.features__card--2 .features__copy {
+  padding: 4px 14px 12px;
+}
+
+.features__card--2 .features__icon,
+.features__card--2 .features__label {
+  display: none;
+}
+
 .lyrics-toggle {
   display: grid;
   place-items: center;
@@ -228,8 +248,10 @@ function openDownload(platform: DownloadPlatformKey) {
   margin-left: auto;
   border: 0;
   border-radius: 50%;
-  background: #ffffff0c;
-  color: var(--md-sys-color-on-secondary-container);
+  background: #ffffff1f;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
   cursor: pointer;
 }
 
@@ -237,127 +259,10 @@ function openDownload(platform: DownloadPlatformKey) {
   background: #ffffff18;
 }
 
-/* The illustrative lines scale with their card so narrow columns never wrap mid-animation. */
-.features__lyrics {
-  position: relative;
-  height: 144px;
-  flex: none;
-  overflow: hidden;
-  font-size: min(7cqw, 2.1rem);
-  font-weight: 760;
-  font-variation-settings: 'ROND' 100;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-.lyrics-line {
-  position: absolute;
-  top: calc(50% - 0.85em);
-  inset-inline: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  column-gap: 0.24em;
-  height: 1.7em;
-  transform-origin: left center;
-  animation: lyrics-line 9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-  animation-delay: var(--line-delay);
-  animation-play-state: var(--animation-play-state);
-}
-
-.lyrics-word {
-  display: inline-block;
-  color: #fff5d6;
-  animation: lyrics-word 9s linear infinite backwards;
-  animation-delay: calc(var(--line-delay) + var(--word) * 0.32s);
-  animation-play-state: var(--animation-play-state);
-}
-
-@keyframes lyrics-line {
-  0%,
-  25%,
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-
-  33%,
-  58% {
-    transform: translateY(-100%) scale(0.94);
-    opacity: 0.5;
-  }
-
-  62% {
-    transform: translateY(-110%) scale(0.94);
-    opacity: 0;
-  }
-
-  63% {
-    transform: translateY(110%) scale(0.94);
-    opacity: 0;
-  }
-
-  66%,
-  92% {
-    transform: translateY(100%) scale(0.94);
-    opacity: 0.5;
-  }
-}
-
-@keyframes lyrics-word {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: none;
-  }
-
-  3% {
-    opacity: 1;
-    transform: translateY(-0.055em) scale(1.08);
-  }
-
-  8%,
-  24% {
-    opacity: 1;
-    transform: none;
-  }
-
-  34% {
-    opacity: 0.4;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lyrics-toggle {
-    display: none;
-  }
-
-  .lyrics-line,
-  .lyrics-word {
-    animation: none;
-  }
-
-  .lyrics-line:not(:first-child) {
-    visibility: hidden;
-  }
-
-  .lyrics-word {
-    opacity: 1;
-    color: var(--md-sys-color-on-secondary-container);
-  }
-}
-
-@media (forced-colors: active) {
-  .lyrics-word {
-    color: CanvasText;
-  }
-}
-
 .platforms {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: var(--md-sys-color-surface);
 }
 
 .platforms::before {
@@ -401,7 +306,10 @@ function openDownload(platform: DownloadPlatformKey) {
   padding: 10px 12px;
   border: 0;
   border-radius: 4px;
-  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
   color: var(--md-sys-color-on-surface);
   cursor: pointer;
   font: inherit;
@@ -418,7 +326,7 @@ function openDownload(platform: DownloadPlatformKey) {
 
 .platforms__list button:hover,
 .platforms__list button:focus-visible {
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
 }
 
 .platforms__icon {
@@ -427,7 +335,7 @@ function openDownload(platform: DownloadPlatformKey) {
   height: 52px;
   place-items: center;
   border-radius: 16px;
-  background: var(--md-sys-color-surface-container-highest);
+  background: var(--glass-bg-strong);
 }
 
 .platforms__icon img {

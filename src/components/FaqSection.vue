@@ -49,7 +49,10 @@ const topItems = FAQ_ITEMS.slice(0, 5)
   align-self: start;
   padding: 36px;
   border-radius: var(--md-sys-shape-corner-extra-large);
-  background: var(--md-sys-color-tertiary-container);
+  border: 1px solid var(--glass-border);
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 55%, transparent);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
   color: var(--md-sys-color-on-tertiary-container);
 }
 
@@ -71,7 +74,10 @@ const topItems = FAQ_ITEMS.slice(0, 5)
 .faq__list details {
   overflow: hidden;
   border-radius: 4px;
-  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 
 .faq__list details:first-child {

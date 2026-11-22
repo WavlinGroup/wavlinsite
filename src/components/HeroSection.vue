@@ -23,34 +23,26 @@ onMounted(async () => {
 
 <template>
   <section class="hero" aria-labelledby="hero-title">
-    <div class="container">
-      <div class="hero__layout">
-        <div class="hero__copy">
-          <h1 id="hero-title">Music <span>without the noise</span></h1>
-          <p class="hero__lede">
-            A free, open-source YouTube Music player for Android. No ads, no clutter, just your music.
-          </p>
-          <div class="hero__actions">
-            <DownloadDialog button-class="btn btn-filled btn-lg" />
-            <a href="https://github.com/WavlinGroup/Wavlin" class="btn btn-outlined btn-lg" target="_blank" rel="noopener noreferrer">
-              <span class="material-symbols-rounded" aria-hidden="true">code</span>
-              View source
-            </a>
-          </div>
-        </div>
-
-        <div class="hero__signal">
-          <span class="hero__signal-icon material-symbols-rounded" aria-hidden="true">phone_android</span>
-          <div>
-            <strong>Made for Android</strong>
-            <p>Ad-free playback, synced lyrics, offline downloads, and Listen Together on your phone.</p>
-          </div>
-          <dl class="hero__stats" aria-label="Wavlin repository statistics">
-            <div><dt>License</dt><dd>GPL-3.0</dd></div>
-            <div><dt>Stars</dt><dd>{{ repoStats.stars }}</dd></div>
-            <div><dt>Latest</dt><dd>{{ repoStats.version }}</dd></div>
-          </dl>
-        </div>
+    <div class="container hero__layout">
+      <p class="hero__badge glass"><span class="material-symbols-rounded" aria-hidden="true">phone_android</span>Made for Android</p>
+      <h1 id="hero-title">Music <span>without the noise</span></h1>
+      <p class="hero__lede">
+        A free, open-source YouTube Music player for Android. No ads, no clutter, just your music.
+      </p>
+      <div class="hero__actions">
+        <DownloadDialog button-class="btn btn-filled btn-lg" />
+        <a href="https://github.com/WavlinGroup/Wavlin" class="btn btn-outlined btn-lg" target="_blank" rel="noopener noreferrer">
+          <span class="material-symbols-rounded" aria-hidden="true">code</span>
+          View source
+        </a>
+      </div>
+      <div class="hero__signal glass">
+        <p>Ad-free playback, synced lyrics, offline downloads, and Listen Together on your phone.</p>
+        <dl class="hero__stats" aria-label="Wavlin repository statistics">
+          <div><dt>License</dt><dd>GPL-3.0</dd></div>
+          <div><dt>Stars</dt><dd>{{ repoStats.stars }}</dd></div>
+          <div><dt>Latest</dt><dd>{{ repoStats.version }}</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -58,25 +50,34 @@ onMounted(async () => {
 
 <style scoped>
 .hero {
-  padding: 32px 0 86px;
-  background: var(--md-sys-color-surface);
+  padding: clamp(56px, 9vw, 120px) 0 clamp(64px, 8vw, 110px);
 }
 
 .hero__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
-  gap: 24px;
-  padding: clamp(32px, 6vw, 72px);
-  border-radius: 44px 44px 18px 44px;
-  background: var(--md-sys-color-surface-container-low);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.hero__copy {
-  max-width: 830px;
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding: 8px 16px 8px 12px;
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-color-primary);
+  font: var(--md-sys-typescale-label-large);
+  font-variation-settings: 'ROND' 100;
+}
+
+.hero__badge .material-symbols-rounded {
+  font-size: 20px;
 }
 
 .hero h1 {
-  max-width: 860px;
+  max-width: 980px;
   margin: 0 0 26px;
   font: var(--md-sys-typescale-display-large);
   letter-spacing: var(--md-sys-typescale-display-large-tracking);
@@ -84,10 +85,11 @@ onMounted(async () => {
 
 .hero h1 span {
   color: var(--md-sys-color-primary);
+  text-shadow: 0 0 48px color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent);
 }
 
 .hero__lede {
-  max-width: 680px;
+  max-width: 640px;
   color: var(--md-sys-color-on-surface-variant);
   font: var(--md-sys-typescale-body-large);
   letter-spacing: var(--md-sys-typescale-body-large-tracking);
@@ -96,52 +98,33 @@ onMounted(async () => {
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
   margin-top: 34px;
 }
 
 .hero__signal {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  min-height: 330px;
-  flex-direction: column;
-  justify-content: space-between;
-  align-self: end;
-  padding: 28px;
-  overflow: hidden;
-  border-radius: 28px 64px 28px 64px;
-  background: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-}
-
-.hero__signal-icon {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: -1;
-  color: currentColor;
-  font-size: clamp(96px, 10vw, 136px);
-  opacity: 0.12;
-  transform: rotate(-8deg);
-}
-
-.hero__signal strong {
-  display: block;
-  margin-bottom: 10px;
-  font: var(--md-sys-typescale-headline-medium);
-  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) auto;
+  align-items: center;
+  gap: 24px 48px;
+  width: min(100%, 860px);
+  margin-top: clamp(40px, 6vw, 72px);
+  padding: 22px 30px;
+  border-radius: 32px;
+  text-align: left;
 }
 
 .hero__signal p {
+  color: var(--md-sys-color-on-surface-variant);
   font: var(--md-sys-typescale-body-medium);
   letter-spacing: var(--md-sys-typescale-body-medium-tracking);
 }
 
 .hero__stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(3, auto);
+  gap: 10px 32px;
 }
 
 .hero__stats div {
@@ -150,6 +133,7 @@ onMounted(async () => {
 
 .hero__stats dt {
   margin-bottom: 3px;
+  color: var(--md-sys-color-on-surface-variant);
   font: var(--md-sys-typescale-label-small);
   font-variation-settings: 'ROND' 100;
   letter-spacing: var(--md-sys-typescale-label-small-tracking);
@@ -162,44 +146,28 @@ onMounted(async () => {
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 900px) {
-  .hero__layout {
+@media (max-width: 760px) {
+  .hero__signal {
     grid-template-columns: 1fr;
+    padding: 22px 24px;
+    border-radius: 26px;
   }
 
-  .hero__signal {
-    min-height: 240px;
+  .hero__stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 }
 
-@media (max-width: 700px) {
-  .hero {
-    padding: 14px 0 64px;
-  }
-
-  .hero__layout {
-    gap: 32px;
-    padding: 30px 24px;
-    border-radius: 30px 30px 14px 30px;
-  }
-
+@media (max-width: 480px) {
   .hero h1 {
     font-size: clamp(2.75rem, 12vw, 4.5rem);
   }
 
-  .hero__signal {
-    min-height: 220px;
-    padding: 24px;
-    border-radius: 24px 52px 24px 52px;
-  }
-
-}
-
-@media (max-width: 480px) {
+  .hero__actions,
   .hero__actions :deep(.btn),
   .hero__actions > .btn {
     width: 100%;
   }
-
 }
 </style>

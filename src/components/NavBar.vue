@@ -61,16 +61,25 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown,
 <style scoped>
 .navbar {
   position: sticky;
-  top: 0;
+  top: 12px;
   z-index: 100;
-  background: var(--md-sys-color-surface-container-low);
+  width: min(100% - 24px, 1240px);
+  margin: 12px auto 0;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--md-sys-shape-corner-full);
+  background: color-mix(in srgb, #ffffff 8%, transparent);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--glass-shadow);
 }
 
 .navbar__inner {
   display: flex;
   align-items: center;
-  min-height: 80px;
+  width: 100%;
+  min-height: 64px;
   gap: 24px;
+  padding-inline: 12px 10px;
 }
 
 .navbar__brand {
@@ -85,8 +94,8 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown,
 }
 
 .navbar__brand-mark {
-  width: 58px;
-  height: 58px;
+  width: 44px;
+  height: 44px;
 }
 
 .navbar__links {
@@ -122,14 +131,17 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown,
 
 .navbar__drawer {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   inset-inline: 0;
   display: none;
   max-height: calc(100dvh - 100%);
   overflow-y: auto;
   padding: 6px 0 18px;
-  border-radius: 0 0 var(--md-sys-shape-corner-extra-large) var(--md-sys-shape-corner-extra-large);
-  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  background: color-mix(in srgb, #14121a 90%, transparent);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 
 .navbar__drawer .container {

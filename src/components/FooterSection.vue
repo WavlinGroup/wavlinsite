@@ -46,8 +46,11 @@ const links = [
 <style scoped>
 .footer {
   padding: 66px 0 38px;
+  border-top: 1px solid var(--glass-border);
   border-radius: 44px 44px 0 0;
-  background: var(--md-sys-color-surface-container-low);
+  background: color-mix(in srgb, #ffffff 5%, transparent);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
 }
 
 .footer__top {
@@ -85,7 +88,7 @@ const links = [
   min-height: 44px;
   padding: 9px 16px;
   border-radius: var(--md-sys-shape-corner-full);
-  background: var(--md-sys-color-surface-container-high);
+  background: var(--glass-bg-strong);
   color: var(--md-sys-color-on-surface-variant);
   font: var(--md-sys-typescale-label-large);
   font-variation-settings: 'ROND' 100;
