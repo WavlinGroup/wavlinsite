@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { activeIndex, fetchShowcaseLines, loopLengthMs, pickHit, toTimedLines } from '../src/content/lyrics/showcase'
+import { activeIndex, fetchShowcaseLines, loopLengthMs, loopWindow, pickHit, toTimedLines } from '../src/content/lyrics/showcase'
 
 const LRC = '[00:01.00] alpha\n[00:03.50] beta\n[00:06.00] \n[00:08.00] gamma'
 
@@ -35,4 +35,11 @@ test('fetchShowcaseLines rejects on http errors and empty results', async () => 
   await expect(fetchShowcaseLines(fail)).rejects.toThrow()
   await expect(fetchShowcaseLines(empty)).rejects.toThrow()
   expect((await fetchShowcaseLines(ok)).length).toBe(3)
+})
+
+test('loopWindow spans the lines sung at the two timestamps', () => {
+  const lines = toTimedLines(LRC)
+  expect(loopWindow(lines, 4000, 4000)).toEqual({ startMs: 3500, endMs: 8000 })
+  expect(loopWindow(lines, 0, 9000)).toEqual({ startMs: 1000, endMs: 12000 })
+  expect(loopWindow([])).toEqual({ startMs: 0, endMs: 0 })
 })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { activeIndex, fetchShowcaseLines, loopLengthMs, SHOWCASE_TRACK, type TimedLine } from '../content/lyrics/showcase'
+import { activeIndex, fetchShowcaseLines, loopWindow, SHOWCASE_TRACK, type TimedLine } from '../content/lyrics/showcase'
 
 const props = defineProps<{ paused?: boolean }>()
 
@@ -16,19 +16,23 @@ let observer: IntersectionObserver | undefined
 let abort: AbortController | undefined
 let reducedMotion = false
 
-const loopMs = computed(() => loopLengthMs(lines.value))
+const loop = computed(() => loopWindow(lines.value))
 const current = computed(() => activeIndex(lines.value, timeMs.value))
 const focus = computed(() => Math.max(current.value, 0))
 const rows = computed(() => lines.value
   .map((line, index) => ({ ...line, index, distance: index - focus.value }))
-  .filter(row => Math.abs(row.distance) <= WINDOW))
-const progress = computed(() => loopMs.value ? Math.min(100, (timeMs.value / loopMs.value) * 100) : 0)
+  .filter(row => Math.abs(row.distance) <= WINDOW && row.startMs >= loop.value.startMs && row.startMs < loop.value.endMs))
+const trackMs = SHOWCASE_TRACK.durationSec * 1000
+const progress = computed(() => Math.min(100, (timeMs.value / trackMs) * 100))
 const clock = (ms: number) => `${Math.floor(ms / 60000)}:${String(Math.floor(ms / 1000) % 60).padStart(2, '0')}`
 
 function sync() {
   const shouldRun = status.value === 'ready' && visible.value && !props.paused && !reducedMotion
   if (shouldRun && timer === undefined) {
-    timer = window.setInterval(() => { timeMs.value = (timeMs.value + TICK_MS) % loopMs.value }, TICK_MS)
+    timer = window.setInterval(() => {
+      const next = timeMs.value + TICK_MS
+      timeMs.value = next >= loop.value.endMs ? loop.value.startMs : next
+    }, TICK_MS)
   } else if (!shouldRun && timer !== undefined) {
     window.clearInterval(timer)
     timer = undefined
@@ -44,7 +48,7 @@ onMounted(async () => {
   abort = new AbortController()
   try {
     lines.value = await fetchShowcaseLines(fetch, abort.signal)
-    timeMs.value = lines.value[0]?.startMs ?? 0
+    timeMs.value = loop.value.startMs
     status.value = 'ready'
   } catch (error) {
     if (!abort.signal.aborted) status.value = 'error'
@@ -77,7 +81,7 @@ onBeforeUnmount(() => {
       <span class="showcase__meta"><strong>{{ SHOWCASE_TRACK.title }}</strong><small>{{ SHOWCASE_TRACK.artist }}</small></span>
       <span class="showcase__bars" aria-hidden="true" :class="{ 'is-paused': paused || status !== 'ready' }"><i /><i /><i /><i /></span>
       <span class="showcase__bar" aria-hidden="true"><b :style="{ width: `${progress}%` }" /></span>
-      <span class="showcase__time" aria-hidden="true"><span>{{ clock(timeMs) }}</span><span>{{ clock(loopMs || SHOWCASE_TRACK.durationSec * 1000) }}</span></span>
+      <span class="showcase__time" aria-hidden="true"><span>{{ clock(timeMs) }}</span><span>{{ clock(trackMs) }}</span></span>
     </figcaption>
   </figure>
 </template>
