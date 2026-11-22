@@ -1,8 +1,11 @@
 name = "wavlinsite"
+main = "worker/index.js"
 compatibility_date = "2026-04-04"
 
 [assets]
 directory = "./dist"
+binding = "ASSETS"
+run_worker_first = ["/", "/p", "/p/*", "/card/*"]
 html_handling = "drop-trailing-slash"
 not_found_handling = "404-page"
 
