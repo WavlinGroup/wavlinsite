@@ -7,6 +7,8 @@
 //   POST /card/<id>       stores a card picture for a synced playlist id (kept once)
 //   GET  /?list=<id> | /?name=..&ids=..   older link formats
 //
+// The Android intent has no package, so every installed Wavlin build (release, test, PR, debug)
+// can handle it and Android lets the user pick when there are several.
 // Everything else falls through to the static site (ASSETS).
 // Needs the KV namespace binding CARDS (data is kept 180 days).
 
@@ -122,8 +124,8 @@ const PAGE = `<!DOCTYPE html>
 
   var customScheme = 'wavlin://' + route + '?' + query;
   var intentUrl = 'intent://' + route + '?' + query +
-    '#Intent;scheme=wavlin;package=com.wavlin.music;' +
-    (youtubeUrl ? 'S.browser_fallback_url=' + encodeURIComponent(youtubeUrl) + ';' : '') + 'end';
+    '#Intent;scheme=wavlin;' +
+    'S.browser_fallback_url=' + encodeURIComponent(youtubeUrl || '${RELEASES_URL}') + ';end';
   var isAndroid = /Android/i.test(navigator.userAgent);
   var target = isAndroid ? intentUrl : customScheme;
 
